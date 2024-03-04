@@ -1,0 +1,54 @@
+
+.dropdowns {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dropdownWrapper {
+    margin: 10px;
+    padding: 15px;
+}
+
+.dropdown {
+    padding: 10px;
+    margin: 15px;
+}
+
+.Country-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.text-label {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.input-boxes {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: 15px;
+}
+
+.input-box {
+    color: black;
+}
+
+.input-submit {
+    padding:5px;
+}
+
+.state-label {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.inputs {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
