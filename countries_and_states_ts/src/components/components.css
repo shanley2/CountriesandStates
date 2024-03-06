@@ -10,6 +10,11 @@
     padding: 15px;
 }
 
+.dropdownTitle {
+    display: flex;
+    flex-direction: column;
+}
+
 .dropdown {
     padding: 10px;
     margin: 15px;

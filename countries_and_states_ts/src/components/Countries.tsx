@@ -55,7 +55,7 @@ const Countries = (props: CountryProps) => {
     
     return (
         <div className="dropdownWrapper">
-            <label>Country
+            <label className='dropdownTitle'>Country
                 <select className="dropdown" id="countrySelect" onChange={handleSelection}>
                     <option value="default">Choose Country</option>
                     {data ? data.map(d  => (

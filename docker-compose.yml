@@ -1,0 +1,22 @@
+version: "3"
+services:
+  backend:
+    image: cands_backend
+    build: ./CandSAPI
+    container_name: api
+    ports: 
+      - 8000:8000
+    volumes:
+      - ./CandSAPI:/app
+  frontend:
+    image: cands_frontend
+    build: ./countries_and_states_ts
+    container_name: fe
+    ports: 
+      - 3000:3000
+    volumes:
+      - ./countries_and_states_ts:/app
+    depends_on: 
+      - backend
+
+

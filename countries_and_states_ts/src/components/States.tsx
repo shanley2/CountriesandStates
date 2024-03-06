@@ -54,7 +54,7 @@ const States = (props: StatesProps) => {
     
     return (
         <div className="dropdownWrapper">
-            <label>State
+            <label className="dropdownTitle">State
                 <select className="dropdown" id="stateSelect" >
                     <option value="default">Choose state</option>
                     {data ? data.map(d => (

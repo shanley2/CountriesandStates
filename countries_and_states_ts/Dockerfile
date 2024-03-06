@@ -1,5 +1,5 @@
 FROM node:18.10-alpine
-WORKDIR /countries_and_states_ts
+WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
