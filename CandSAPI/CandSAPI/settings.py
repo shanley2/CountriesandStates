@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -87,11 +88,21 @@ REST_FRAMEWORK = {
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    # 'default': {
+    #     'ENGINE': "django.db.backends.postgresql",
+    #     'NAME': "postgres", 
+    #     'USER': "postgres",
+    #     'PASSWORD': "password",
+    #     "HOST": "db", # same as service name set in compose file: check it out
+    #     "PORT": "5432",
+    # }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
 }
+#It will default to a sqlite database when it hasn't recieved the environment variable
+DATABASES['default'] = dj_database_url.config(default='sqlite:///db.sqlite3')
 
 
 # Password validation
