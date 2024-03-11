@@ -2,12 +2,14 @@ version: "3"
 services:
   backend:
     image: cands_backend
-    build: ./CandSAPI
+    build: 
+      context: ./CandSAPI
+      #target: base
     container_name: api
     ports: 
       - 8000:8000
-    volumes:
-      - ./CandSAPI:/app
+    #volumes:
+      #- ./CandSAPI:/app
     environment:
       DATABASE_URL: postgres://postgres:password@db/postgres
     depends_on:
@@ -15,12 +17,15 @@ services:
         condition: service_healthy
   frontend:
     image: cands_frontend
-    build: ./countries_and_states_ts
+    build: 
+      context: ./countries_and_states_ts
+      #target: base
     container_name: fe
     ports: 
-      - 3000:3000
-    volumes:
-      - ./countries_and_states_ts:/app
+      #- 3000:3000  #This is for dev
+      - 3000:80 #This is for prod
+    #volumes:   #For dev
+      #- ./countries_and_states_ts:/app 
     depends_on: 
       - backend
   db:
@@ -37,4 +42,9 @@ services:
       test: ["CMD-SHELL", "pg_isready"]
     ports:
       - 5432:5432
+    volumes:
+      - postgresdb:/var/lib/postgresql/data
+volumes:
+  postgresdb:
+    driver: local
 
