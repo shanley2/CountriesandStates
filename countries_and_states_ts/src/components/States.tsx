@@ -31,13 +31,13 @@ const States = (props: StatesProps) => {
     };
 
     useEffect(() => {
+        // if statement check if country is default,if it is, don't fetch setData to []
         if (country === "default" || country === "") {
             setData([]);
         } else {
             //const apiString: string = `https://xc-countries-api.fly.dev/api/countries/${country}/states/`;
             const apiString: string = `http://localhost:8000/api/countries/${country}/states`;
-        
-            // TODO if statement check if country is default,if it is, don't fetch setData to []
+
             fetch(apiString)
               .then(response => response.json())
               .then(json => setData(json))

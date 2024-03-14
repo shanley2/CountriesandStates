@@ -1,15 +1,18 @@
 import React, {useState} from 'react';
 import Countries from './Countries';
 
+type AddStateProps = {
+    token: String;
+}
 
-const AddState = () => {
+const AddState = (props: AddStateProps) => {
     const [id, setCountryID] = useState("");
     const [newState, setState] = useState("");
     const [newCode, setCode] = useState("");
 
 
     const handleSubmit = (event: React.FormEvent) => {
-
+        // TODO: error handling if a person isn't logged in
         if ((id === "" ||  newCode === "") || newState ==="") {
             alert("Both fields must be populated to add a country");
         } else {
@@ -27,7 +30,7 @@ const AddState = () => {
                 }),
 
             }).catch(error => {
-                console.log(error);
+                console.error(error);
             });
         }
         setState("");

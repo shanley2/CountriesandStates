@@ -4,12 +4,12 @@ services:
     image: cands_backend
     build: 
       context: ./CandSAPI
-      #target: base
+      target: base #For dev
     container_name: api
     ports: 
       - 8000:8000
-    #volumes:
-      #- ./CandSAPI:/app
+    volumes: #For dev
+      - ./CandSAPI:/app #For dev
     environment:
       DATABASE_URL: postgres://postgres:password@db/postgres
     depends_on:
@@ -19,13 +19,13 @@ services:
     image: cands_frontend
     build: 
       context: ./countries_and_states_ts
-      #target: base
+      target: base #For dev
     container_name: fe
     ports: 
-      #- 3000:3000  #This is for dev
-      - 3000:80 #This is for prod
-    #volumes:   #For dev
-      #- ./countries_and_states_ts:/app 
+      - 3000:3000  #This is for dev
+      #- 3000:80 #This is for prod
+    volumes:   #For dev
+      - ./countries_and_states_ts:/app #For dev
     depends_on: 
       - backend
   db:

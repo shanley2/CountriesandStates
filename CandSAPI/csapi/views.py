@@ -1,24 +1,40 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
+from django.contrib.auth.models import User
 from rest_framework.parsers import JSONParser
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework import generics
+from rest_framework.views import APIView
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import authenticate
 
-from .serializers import CountrySerializer, StateSerializer
+from .serializers import CountrySerializer, StateSerializer, UserSerializer
 from .models import Country, State
 
-
+"""
+Handles requests for all countries in api
+"""
 class Countries(generics.ListCreateAPIView):
     queryset = Country.objects.all()
     serializer_class = CountrySerializer
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
+"""
+Handles requests for all states in api
+"""
 class States(generics.ListCreateAPIView):
     queryset = State.objects.all()
     serializer_class = StateSerializer
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
+"""
+Handles states within a country
+Get shows all of the states within a given country code (api/countries/<code>/states)
+Post adds a state to a given country
+"""
 class StatesFromCountry(generics.ListCreateAPIView):
     serializer_class = StateSerializer
 
@@ -38,6 +54,33 @@ class StateInfo(generics.ListCreateAPIView):
     def get_queryset(self):
         return State.objects.filter(id=self.kwargs['id'])
     
+class UserList(generics.ListCreateAPIView):
+    # TODO: make sure that usernames are unique
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (AllowAny,)
+
+class UserLogin(ObtainAuthToken):
+
+    def post (self, request):
+        serializer = self.serializer_class(data = request.data, context = {'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        #if user:
+
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'token': token.key,
+            'id': user.pk,
+            'username': user.username
+        })
+
+    # def post(self, request):
+    #     user = authenticate(username=request.data['username'], password=request.data['password'])
+    #     if user:
+
+
+
 # @csrf_exempt
 # def country_list(request):
 #     if request.method == "GET":

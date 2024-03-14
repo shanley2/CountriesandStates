@@ -1,7 +1,11 @@
 import React, {useState} from 'react';
 import './components.css';
 
-const AddCountry = () => {
+type AddCountryProps = {
+    token: String;
+}
+
+const AddCountry = (props: AddCountryProps) => {
     const [newCountry, setCountry] = useState("");
     const [newCode, setCode] = useState("");
 
@@ -16,6 +20,7 @@ const AddCountry = () => {
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
+                    Authorization: `Token ${props.token}`,
                 },
                 body: JSON.stringify({
                     code: newCode,
@@ -23,7 +28,7 @@ const AddCountry = () => {
                 }),
 
             }).catch(error => {
-                console.log(error);
+                console.error(error);
             });
         }
         setCode("");
@@ -32,7 +37,7 @@ const AddCountry = () => {
     
 
     return (
-        <div className="Country">
+        <div className="Country Restricted">
             <div className="Country-head">
                 <h1>Add New Country</h1>
             </div>
@@ -52,6 +57,15 @@ const AddCountry = () => {
                     </div>
                 </div>
             </div>
+            {(props.token=== ""|| props.token === undefined) ? 
+                (<div className="Popup">
+                    <div className="Popup-text" >
+                        Please log in to access this feature
+                    </div>
+                </div>) :
+                <div></div>
+            }
+            
         </div>
 
     )
