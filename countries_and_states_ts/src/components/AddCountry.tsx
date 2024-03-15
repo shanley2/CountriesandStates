@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import './components.css';
+import Login from './Login';
+import {Link} from 'react-router-dom';
 
 type AddCountryProps = {
     token: String;
@@ -58,9 +60,12 @@ const AddCountry = (props: AddCountryProps) => {
                 </div>
             </div>
             {(props.token=== ""|| props.token === undefined) ? 
-                (<div className="Popup">
-                    <div className="Popup-text" >
-                        Please log in to access this feature
+                (<div className="Popup-wrapper">
+                    <div className="Popup">
+                        <div className="Popup-text-wrapper" >
+                            <div className="Popup-item">Please log in to access this feature</div>
+                            <Link to="/login" className='Popup-item Popup-link'>Login</Link>
+                        </div>
                     </div>
                 </div>) :
                 <div></div>
