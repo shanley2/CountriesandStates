@@ -15,12 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from csapi.views import UserList, UserLogin
+from csapi.views import UserList, LoginView
 
 urlpatterns = [
     path('api/', include('csapi.urls')),
     path('admin/', admin.site.urls),
     path('user/register/', UserList.as_view()),
-    path('user/login/', UserLogin.as_view()),
+    path('user/login/', LoginView.as_view(), name='knox_login'),
     path('api-auth/', include('rest_framework.urls')) #for restapi browsable api
 ]

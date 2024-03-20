@@ -3,6 +3,7 @@ dj-database-url==2.1.0
 Django==3.2.24
 django-cors-headers==4.1.0
 django-filter==23.5
+django-rest-knox==4.0.0
 djangorestframework==3.14.0
 gunicorn==21
 importlib-metadata==6.7.0

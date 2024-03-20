@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './components.css';
-
+import Call from '../api/Calls';
 
 
 const Register = () => {
@@ -18,23 +18,17 @@ const Register = () => {
             // TODO: Figure out a better way to handle empty fields
             alert("All fields must be populated to register");
         } else {
-            fetch("http://localhost:8000/user/register/", {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: username,
-                    password: pwd,
-                    first_name: fName,
-                    last_name: lName,
-                    email: email,
-                }),
+            const body = JSON.stringify({
+                        username: username,
+                        password: pwd,
+                        first_name: fName,
+                        last_name: lName,
+                        email: email,
+                    });
 
-            }).catch(error => {
-                console.error(error);
-            });
+            Call.callLogin("POST", "user/register/", body).catch(error => {
+                    console.error(error);
+                });
         }
         setEmail("");
         setPwd("");

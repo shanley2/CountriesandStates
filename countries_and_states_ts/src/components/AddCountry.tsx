@@ -1,42 +1,32 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import './components.css';
-import Login from './Login';
 import {Link} from 'react-router-dom';
+import Call from '../api/Calls';
+import {Context} from '../context/Context';
 
-type AddCountryProps = {
-    token: String;
-}
-
-const AddCountry = (props: AddCountryProps) => {
+const AddCountry = () => {
     const [newCountry, setCountry] = useState("");
     const [newCode, setCode] = useState("");
+
+    //Take out later?
+    const {token} = useContext(Context);
 
     const handleSubmit = (event: React.FormEvent) => {
 
         if (newCountry === "" ||  newCode === "") {
             alert("Both fields must be populated to add a country");
         } else {
-            //fetch("https://xc-countries-api.fly.dev/api/countries/", {
-            fetch("http://localhost:8000/api/countries/", {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    Authorization: `Token ${props.token}`,
-                },
-                body: JSON.stringify({
-                    code: newCode,
-                    name: newCountry,
-                }),
-
-            }).catch(error => {
+            const body = JSON.stringify({
+                code: newCode,
+                name: newCountry,
+            });
+            Call.callToken("POST", "api/countries/", body, token).catch(error => {
                 console.error(error);
             });
         }
         setCode("");
         setCountry("");
     };
-    
 
     return (
         <div className="Country Restricted">
@@ -59,7 +49,7 @@ const AddCountry = (props: AddCountryProps) => {
                     </div>
                 </div>
             </div>
-            {(props.token=== ""|| props.token === undefined) ? 
+            {(token === ""|| token === undefined) ? 
                 (<div className="Popup-wrapper">
                     <div className="Popup">
                         <div className="Popup-text-wrapper" >

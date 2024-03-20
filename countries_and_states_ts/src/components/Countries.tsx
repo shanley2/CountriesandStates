@@ -1,5 +1,6 @@
 import React, {useState, useEffect, Dispatch, SetStateAction} from 'react';
 import './components.css';
+import Call from '../api/Calls';
 
 type Country = {
     name: string;
@@ -31,7 +32,8 @@ const Countries = (props: CountryProps) => {
 
     useEffect(() => {
         //fetch('https://xc-countries-api.fly.dev/api/countries/')
-        fetch('http://localhost:8000/api/countries/')
+        // fetch('http://localhost:8000/api/countries/')
+        Call.call("api/countries/")
           .then(response => response.json())
           .then(json => setData(json))
           .catch(error => console.error(error));

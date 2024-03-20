@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import './components.css';
+import Call from '../api/Calls';
 
 type StatesProps = {
     country: string;
@@ -16,7 +17,6 @@ const States = (props: StatesProps) => {
 
     const {country} = props;
     const [data, setData] = useState<State[]>();
-    
 
     const sortByName = (a: string, b: string) => {
         a = a.toLowerCase();
@@ -36,9 +36,9 @@ const States = (props: StatesProps) => {
             setData([]);
         } else {
             //const apiString: string = `https://xc-countries-api.fly.dev/api/countries/${country}/states/`;
-            const apiString: string = `http://localhost:8000/api/countries/${country}/states`;
+            //const apiString: string = `http://localhost:8000/api/countries/${country}/states`;
 
-            fetch(apiString)
+            Call.call(`api/countries/${country}/states`)
               .then(response => response.json())
               .then(json => setData(json))
               .catch(error => console.error(error));

@@ -1,40 +1,25 @@
-import React, {useState, Dispatch, SetStateAction} from 'react';
+import React, {useState, useContext} from 'react';
 import './components.css';
+import Call from '../api/Calls';
+import {Context} from '../context/Context';
 
-type LoginProps = {
-    setToken: Dispatch<SetStateAction<string>>;
-    token: String; // TODO: Take this out later
-}
-const Login = (props: LoginProps) => {
+
+const Login = () => {
     const [username, setUsername] = useState("");
     const [pwd, setPwd] = useState("");
-    //const [token, setToken] = useState(""); // TODO: probs move this to a higherlevel
-
-    async function postLogin () {
-        const response = await fetch("http://localhost:8000/user/login/", {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username: username,
-                password: pwd,
-            }),
-
-        });
-
-        const json = await response.json();
-        return json;
-    }
+    const {setToken} = useContext(Context);
 
     const handleSubmit = (event: React.FormEvent) => {
         if (username === "" || pwd === "") {
             alert("Both fields must be populated to log in")
         } else  {
+            const body = JSON.stringify({
+                username: username,
+                password: pwd,
+            });
         
-            postLogin().then((json) => {
-                props.setToken(json.token);
+            Call.callLogin("POST", "user/login/", body).then((json) => {
+                setToken(json.token);
                 return json;
             }).catch(error => {
                 console.error(error);
@@ -54,7 +39,7 @@ const Login = (props: LoginProps) => {
                 </label>
                 <label className="Registration-inputLabel">
                     Password
-                    <input value={pwd} className="Registration-input" type='text' onChange={event => setPwd(event.target.value)} />
+                    <input value={pwd} className="Registration-input" type='password' onChange={event => setPwd(event.target.value)} />
                 </label>
                 <div className="input-submit">
                     <button className="Country-button" onClick={handleSubmit}>Submit</button>

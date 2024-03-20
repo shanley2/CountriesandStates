@@ -1,14 +1,16 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import Countries from './Countries';
+import {Link} from 'react-router-dom';
+import Call from '../api/Calls';
+import {Context} from '../context/Context';
 
-type AddStateProps = {
-    token: String;
-}
-
-const AddState = (props: AddStateProps) => {
+const AddState = () => {
     const [id, setCountryID] = useState("");
     const [newState, setState] = useState("");
     const [newCode, setCode] = useState("");
+
+    //TODO take out: replace with boolean??
+    const {token} = useContext(Context);
 
 
     const handleSubmit = (event: React.FormEvent) => {
@@ -16,20 +18,12 @@ const AddState = (props: AddStateProps) => {
         if ((id === "" ||  newCode === "") || newState ==="") {
             alert("Both fields must be populated to add a country");
         } else {
-            //fetch("https://xc-countries-api.fly.dev/api/states/", {
-            fetch("http://localhost:8000/api/states/", {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    code: newCode,
-                    name: newState,
-                    country_id: id,
-                }),
-
-            }).catch(error => {
+            const body = JSON.stringify({
+                        code: newCode,
+                        name: newState,
+                        country_id: id,
+                    });
+            Call.callToken("POST", "api/states/", body, token).catch(error => {
                 console.error(error);
             });
         }
@@ -43,7 +37,7 @@ const AddState = (props: AddStateProps) => {
             <div className="State-form">
                 <div className="inputs">
                     <Countries setCountryID={setCountryID} needCode={false}/>
-                
+            
                     <label className="state-label">State Name
                         <input value={newState} type="text" id="stateName" className="input-box" onChange={event => setState(event.target.value)}/>
                     </label>
@@ -55,6 +49,17 @@ const AddState = (props: AddStateProps) => {
                         <button className="Country-button" onClick={handleSubmit}>Submit</button>
                 </div>
             </div>
+            {(token=== ""|| token === undefined) ? 
+                (<div className="Popup-wrapper">
+                    <div className="Popup">
+                        <div className="Popup-text-wrapper" >
+                            <div className="Popup-item">Please log in to access this feature</div>
+                            <Link to="/login" className='Popup-item Popup-link'>Login</Link>
+                        </div>
+                    </div>
+                </div>) :
+                <div></div>
+            }
         </div>
     )
 }

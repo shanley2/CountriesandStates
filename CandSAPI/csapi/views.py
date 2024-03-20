@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import authenticate, login
 from rest_framework.parsers import JSONParser
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework import generics
@@ -8,8 +10,10 @@ from rest_framework.views import APIView
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import authenticate
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.authentication import BasicAuthentication
+from knox.views import LoginView as KnoxLoginView
+from knox.auth import TokenAuthentication
 
 from .serializers import CountrySerializer, StateSerializer, UserSerializer
 from .models import Country, State
@@ -60,24 +64,30 @@ class UserList(generics.ListCreateAPIView):
     serializer_class = UserSerializer
     permission_classes = (AllowAny,)
 
-class UserLogin(ObtainAuthToken):
+class LoginView(KnoxLoginView):
+    permission_classes = (AllowAny,)
 
-    def post (self, request):
-        serializer = self.serializer_class(data = request.data, context = {'request': request})
+    def post(self, request, format=None):
+        serializer = AuthTokenSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
-        #if user:
+        login(request, user)
+        return super(LoginView, self).post(request, format=None)
 
-        token, created = Token.objects.get_or_create(user=user)
-        return Response({
-            'token': token.key,
-            'id': user.pk,
-            'username': user.username
-        })
+# Without Knox (using built in token authentication)
+# class UserLogin(ObtainAuthToken):
 
-    # def post(self, request):
-    #     user = authenticate(username=request.data['username'], password=request.data['password'])
-    #     if user:
+#     def post (self, request):
+#         serializer = self.serializer_class(data = request.data, context = {'request': request})
+#         serializer.is_valid(raise_exception=True)
+#         user = serializer.validated_data['user']
+
+#         token, created = Token.objects.get_or_create(user=user)
+#         return Response({
+#             'token': token.key,
+#             'id': user.pk,
+#             'username': user.username
+#         })
 
 
 
