@@ -23,7 +23,7 @@ const AddState = () => {
                         name: newState,
                         country_id: id,
                     });
-            Call.callToken("POST", "api/states/", body, token).catch(error => {
+            Call.call("POST", "api/states/", body, token).catch(error => {
                 console.error(error);
             });
         }

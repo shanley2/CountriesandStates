@@ -33,7 +33,7 @@ const Countries = (props: CountryProps) => {
     useEffect(() => {
         //fetch('https://xc-countries-api.fly.dev/api/countries/')
         // fetch('http://localhost:8000/api/countries/')
-        Call.call("api/countries/")
+        Call.call("GET", "api/countries/")
           .then(response => response.json())
           .then(json => setData(json))
           .catch(error => console.error(error));

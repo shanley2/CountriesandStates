@@ -20,7 +20,7 @@ const AddCountry = () => {
                 code: newCode,
                 name: newCountry,
             });
-            Call.callToken("POST", "api/countries/", body, token).catch(error => {
+            Call.call("POST", "api/countries/", body, token).catch(error => {
                 console.error(error);
             });
         }

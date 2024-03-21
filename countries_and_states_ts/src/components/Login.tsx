@@ -18,7 +18,7 @@ const Login = () => {
                 password: pwd,
             });
         
-            Call.callLogin("POST", "user/login/", body).then((json) => {
+            Call.call("POST", "user/login/", body).then((json) => {
                 setToken(json.token);
                 return json;
             }).catch(error => {

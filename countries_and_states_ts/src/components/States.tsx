@@ -38,7 +38,7 @@ const States = (props: StatesProps) => {
             //const apiString: string = `https://xc-countries-api.fly.dev/api/countries/${country}/states/`;
             //const apiString: string = `http://localhost:8000/api/countries/${country}/states`;
 
-            Call.call(`api/countries/${country}/states`)
+            Call.call("GET", `api/countries/${country}/states`)
               .then(response => response.json())
               .then(json => setData(json))
               .catch(error => console.error(error));

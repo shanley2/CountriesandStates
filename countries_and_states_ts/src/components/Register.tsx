@@ -26,7 +26,7 @@ const Register = () => {
                         email: email,
                     });
 
-            Call.callLogin("POST", "user/register/", body).catch(error => {
+            Call.call("POST", "user/register/", body).catch(error => {
                     console.error(error);
                 });
         }
